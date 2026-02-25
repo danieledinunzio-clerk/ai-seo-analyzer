@@ -1,7 +1,8 @@
 export const runtime = "nodejs";
 
-const PYTHON_API_URL =
-  process.env.PYTHON_API_URL || "http://localhost:8000";
+const PYTHON_API_URL = (
+  process.env.PYTHON_API_URL || "http://localhost:8000"
+).replace(/\/$/, "");
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -13,11 +14,12 @@ export async function POST(request: Request) {
     });
   }
 
-  console.log("[analyze] PYTHON_API_URL:", PYTHON_API_URL);
+  const targetUrl = `${PYTHON_API_URL}/analyze`;
+  console.log("[analyze] calling:", targetUrl);
 
   let upstream: Response;
   try {
-    upstream = await fetch(`${PYTHON_API_URL}/analyze`, {
+    upstream = await fetch(targetUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
