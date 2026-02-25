@@ -1339,15 +1339,17 @@ def collect_pages_to_analyze(base_url: str, sitemap_urls: list, max_pages: int =
     """Collect a representative set of URLs to analyze."""
     urls_to_check = [base_url]
 
-    # Add sitemap URLs (pick a sample)
-    for url in sitemap_urls[:20]:
+    # Add all sitemap URLs on the same domain
+    for url in sitemap_urls:
         parsed = urllib.parse.urlparse(url)
         base_parsed = urllib.parse.urlparse(base_url)
         if parsed.netloc == base_parsed.netloc:
             if url not in urls_to_check:
                 urls_to_check.append(url)
 
-    # Limit
+    # 0 = no limit (analyze all)
+    if max_pages == 0:
+        return urls_to_check
     return urls_to_check[:max_pages]
 
 def main():
