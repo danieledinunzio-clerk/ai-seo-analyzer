@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   const stream = new ReadableStream({
     start(controller) {
-      const pythonBin = process.env.PYTHON_BIN || "python3";
+      const pythonBin = process.env.PYTHON_BIN || "/usr/bin/python3";
       const child = spawn(pythonBin, [
         SCRIPT_PATH,
         url,
