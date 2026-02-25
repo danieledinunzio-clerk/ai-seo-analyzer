@@ -3,6 +3,7 @@
 import { useAnalysis } from "@/hooks/useAnalysis";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { ResultsDashboard } from "@/components/results/ResultsDashboard";
+import { WhatsNew } from "@/components/WhatsNew";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function Home() {
@@ -38,6 +39,8 @@ export default function Home() {
       {status === "complete" && result && (
         <ResultsDashboard result={result} onReset={reset} />
       )}
+
+      {status === "idle" && <WhatsNew />}
     </main>
   );
 }
