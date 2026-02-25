@@ -13,6 +13,8 @@ export async function POST(request: Request) {
     });
   }
 
+  console.log("[analyze] PYTHON_API_URL:", PYTHON_API_URL);
+
   let upstream: Response;
   try {
     upstream = await fetch(`${PYTHON_API_URL}/analyze`, {
@@ -20,12 +22,15 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-  } catch {
+  } catch (e) {
+    console.log("[analyze] fetch error:", e);
     const err = JSON.stringify({ type: "error", message: "Analysis service unavailable" });
     return new Response(`data: ${err}\n\ndata: [DONE]\n\n`, {
       headers: { "Content-Type": "text/event-stream" },
     });
   }
+
+  console.log("[analyze] upstream status:", upstream.status);
 
   if (!upstream.ok || !upstream.body) {
     const err = JSON.stringify({ type: "error", message: `Service error: ${upstream.status}` });
